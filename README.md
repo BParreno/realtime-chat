@@ -1,98 +1,119 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+💬 Aplicación de Chat en Tiempo Real (realtime-chat)
+Este proyecto implementa una aplicación de chat simple en tiempo real utilizando NestJS para el backend (con WebSockets) y HTML/JavaScript puro para el frontend. Permite a múltiples usuarios conectarse y enviar mensajes que se difunden instantáneamente a todos los participantes.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+🚀 Tecnologías Utilizadas
+NestJS: Un framework progresivo de Node.js para construir aplicaciones del lado del servidor eficientes y escalables.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+WebSockets (@nestjs/platform-socket.io y socket.io): Permiten la comunicación bidireccional en tiempo real entre el servidor y los clientes.
 
-## Description
+Socket.IO: Una librería para aplicaciones de chat en tiempo real, que facilita la comunicación WebSocket.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+HTML/CSS/JavaScript (Frontend): Tecnologías web estándar para la interfaz de usuario del cliente del chat.
 
-## Project setup
+📡 Detalles del Servicio
+Rol: Provee la funcionalidad de chat en tiempo real, gestionando las conexiones de clientes y la difusión de mensajes.
 
-```bash
-$ npm install
-```
+Puerto de Escucha del Backend (NestJS): 3002
 
-## Compile and run the project
+Frontend: Un archivo HTML estático que se conecta al backend del chat.
 
-```bash
-# development
-$ npm run start
+📦 Estructura del Proyecto
+El proyecto sigue una estructura modular típica de NestJS, con un módulo específico para la lógica del chat. El frontend se encuentra en una carpeta separada.
 
-# watch mode
-$ npm run start:dev
+realtime-chat/
+├── src/
+│   ├── main.ts                   # Punto de entrada de la aplicación NestJS.
+│   ├── app.module.ts             # Módulo principal de la aplicación.
+│   ├── app.controller.ts         # Controlador de ejemplo (Hello World).
+│   ├── app.service.ts            # Servicio de ejemplo.
+│   └── chat/
+│       ├── chat.module.ts        # Módulo del chat.
+│       ├── chat.gateway.ts       # Gateway WebSocket para la lógica del chat.
+│   └── Front/
+│       └── index.html            # Interfaz de usuario del cliente de chat.
+├── package.json
+└── tsconfig.json
+└── ...otros archivos de configuración
+⚙️ Funcionalidades del Chat
+Este servicio expone las siguientes funcionalidades a través de WebSockets:
 
-# production mode
-$ npm run start:prod
-```
+connect (Evento interno de Socket.IO): Se activa cuando un cliente se conecta al servidor. El servidor notifica a todos los usuarios.
 
-## Run tests
+disconnect (Evento interno de Socket.IO): Se activa cuando un cliente se desconecta del servidor. El servidor notifica a todos los usuarios.
 
-```bash
-# unit tests
-$ npm run test
+chatMessage (Evento del cliente al servidor): Un cliente envía un mensaje. El servidor lo recibe y lo reenvía (emite) a todos los clientes conectados.
 
-# e2e tests
-$ npm run test:e2e
+Payload Esperado: string (el contenido del mensaje).
 
-# test coverage
-$ npm run test:cov
-```
+Retorno (a todos los clientes): { senderId: string, message: string }.
 
-## Deployment
+userConnected (Evento del servidor al cliente): Notificación de que un nuevo usuario se ha unido.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+userDisconnected (Evento del servidor al cliente): Notificación de que un usuario ha abandonado el chat.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+🚀 Cómo Poner en Marcha la Aplicación
+Sigue estos pasos para configurar y ejecutar la aplicación de chat en tu entorno de desarrollo.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Prerrequisitos
+Asegúrate de tener instalados los siguientes componentes:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Node.js (versión 16.x o superior recomendada) y npm.
 
-## Resources
+NestJS CLI (instalado globalmente: npm i -g @nestjs/cli).
 
-Check out a few resources that may come in handy when working with NestJS:
+Configuración del Entorno
+Navegar al Directorio del Proyecto:
+Abre tu terminal y navega al directorio raíz del proyecto realtime-chat.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Bash
 
-## Support
+cd realtime-chat
+Instalar Dependencias del Proyecto:
+Instala todas las librerías necesarias:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Bash
 
-## Stay in touch
+npm install
+Si no están instaladas, podrías necesitar:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Bash
 
-## License
+npm install @nestjs/platform-socket.io socket.io socket.io-client
+Iniciar el Backend (Servidor NestJS)
+Una vez configurado todo lo anterior, para levantar el backend del chat:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Bash
+
+npm run start:dev
+Deberías ver un mensaje en tu consola indicando que la aplicación está escuchando en el puerto 3002.
+
+Abrir el Frontend (Cliente del Chat)
+Mientras el backend de NestJS está corriendo:
+
+Abre el archivo src/Front/index.html directamente en tu navegador web preferido (Chrome, Firefox, etc.). Puedes hacerlo arrastrando el archivo al navegador o haciendo doble clic en él en tu explorador de archivos.
+
+Asegúrate de que la URL de conexión en index.html sea correcta. Dentro de index.html, la línea const socket = io('http://localhost:3000'); debe apuntar al puerto donde tu servidor NestJS está escuchando, que en este caso es 3002.
+
+CORRECCIÓN NECESARIA EN src/Front/index.html:
+Busca esta línea:
+
+HTML
+
+<script>
+    const socket = io('http://localhost:3000'); // Asegúrate que coincide con el puerto de NestJS
+Y cámbiala a:
+
+HTML
+
+<script>
+    const socket = io('http://localhost:3002'); // Ahora coincide con el puerto de NestJS
+Guarda los cambios en index.html y vuelve a abrirlo en tu navegador.
+
+🧪 Cómo Probar el Funcionamiento
+Asegúrate de que el backend de NestJS esté corriendo (npm run start:dev).
+
+Abre el archivo src/Front/index.html en múltiples pestañas o ventanas del navegador. Cada pestaña representará un "usuario" diferente.
+
+Escribe mensajes en el campo de texto y haz clic en "Enviar" (o presiona Enter).
+
+Observa cómo los mensajes se muestran en tiempo real en todas las pestañas conectadas. También verás mensajes del sistema cuando un usuario se conecte o desconecte.
